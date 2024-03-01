@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        #qrcode {
+            width: 256px;
+            height: 256px;
+            margin-top: 15px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4"></script>
+</head>
+<body>
+    <input id="text" type="text" value="Ahmed Farag" minlength="6" maxlength="6" placeholder="Enter 6 digits"/>
+    <div id="qrcode"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ensure that the DOM is fully loaded before accessing elements
+
+            // Using jQuery for event handling
+            $("#text").on("blur keydown", function (e) {
+                if (e.type === "blur" || e.keyCode === 13) {
+                    makeCode();
+                }
+            });
+
+            // Function to generate QR code
+            function makeCode() {
+                var elText = document.getElementById("text");
+                const randomNum = Math.floor(Math.random() * (9999999999999 - 1000000000000) + 1000000000000);
+                const qrCodeText = `0100000000${elText.value}1725073110ve090a#21${randomNum}`;
+
+                if (!elText.value) {
+                    // Optional: Provide feedback to the user if the input is empty
+                    // alert("Input a text");
+                    // elText.focus();
+                    // return;
+                }
+
+                // Clear existing QR code
+                $("#qrcode").empty();
+
+                // Use qrcode library to generate the QR code
+                new QRCode(document.getElementById("qrcode"), qrCodeText);
+            }
+
+            // Initial QR code generation
+            makeCode();
+        });
+    </script>
+</body>
+</html>
