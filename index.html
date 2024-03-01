@@ -5,53 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
     <style>
-        #qrcode {
-            width: 256px;
-            height: 256px;
-            margin-top: 15px;
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.js" integrity="sha512-oxrVyBhqnzQ0BzuM0A/6dEIk0alz0p4SpDRaWvtuUoarIc8rnL5lVniHG5Dp21MRFojcQcmKHjaskNXhSaUPPw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-    <input id="text" type="text" value="Ahmed Farag" minlength="6" maxlength="6" placeholder="Enter 6 digits"/>
-    <div id="qrcode"></div>
+    <input type="text" id="digitInput" placeholder="Enter 6 digits" minlength="6" maxlength="6">
+    <button onclick="generateQRCode()">Generate</button>
+    <button onclick="resetForm()">Reset</button>
+    <img id="qrCodeImage" alt="QR Code Image">
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Ensure that the DOM is fully loaded before accessing elements
+        function generateQRCode() {
+            const digitInput = document.getElementById('digitInput');
+            const qrCodeImage = document.getElementById('qrCodeImage');
 
-            // Using jQuery for event handling
-            $("#text").on("blur keydown", function (e) {
-                if (e.type === "blur" || e.keyCode === 13) {
-                    makeCode();
-                }
-            });
-
-            // Function to generate QR code
-            function makeCode() {
-                var elText = document.getElementById("text");
+            if (digitInput.value.length === 6 && /^\d+$/.test(digitInput.value)) {
                 const randomNum = Math.floor(Math.random() * (9999999999999 - 1000000000000) + 1000000000000);
-                const qrCodeText = `0100000000${elText.value}1725073110ve090a#21${randomNum}`;
-
-                if (!elText.value) {
-                    // Optional: Provide feedback to the user if the input is empty
-                    // alert("Input a text");
-                    // elText.focus();
-                    // return;
-                }
-
-                // Clear existing QR code
-                $("#qrcode").empty();
-
-                // Use qrcode library to generate the QR code
-                new QRCode(document.getElementById("qrcode"), qrCodeText);
+                const qrCodeText = `0100000000${digitInput.value}1725073110ve090a#21${randomNum}`;
+                // Use a QR code library or API to generate the QR code image (not implemented here)
+                // For example, you can use a library like qr-code-styling (https://www.npmjs.com/package/qr-code-styling)
+                // to generate the QR code image and set it to the src attribute of the img tag.
+                // Here, we are just displaying the generated text for simplicity.
+                qrCodeImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrCodeText)}`;
+            } else {
+                alert('Please enter valid 6 digits.');
             }
+        }
 
-            // Initial QR code generation
-            makeCode();
-        });
+        function resetForm() {
+            document.getElementById('digitInput').value = '';
+            document.getElementById('qrCodeImage').src = '';
+        }
     </script>
 </body>
 </html>
